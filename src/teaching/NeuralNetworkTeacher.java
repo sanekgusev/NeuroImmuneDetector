@@ -1,0 +1,66 @@
+package teaching;
+
+import java.util.Random;
+
+import structure.KohonenNeuron;
+import structure.NeuralNetwork;
+import vectors.ReferenceVectorContainer;
+
+public class NeuralNetworkTeacher {
+
+	public void initializeAndTeach(NeuralNetwork network, 
+			Iterable<ReferenceVectorContainer> referenceVectors,
+			double desiredError, 
+			int iterationsLimit,
+			double adjustmentCoefficient) {
+		initialize(network);
+		teach(network, referenceVectors, desiredError, iterationsLimit, adjustmentCoefficient);
+	}
+	
+	public void teach(NeuralNetwork network, 
+			Iterable<ReferenceVectorContainer> referenceVectors,
+			double desiredError, 
+			int iterationsLimit,
+			double adjustmentCoefficient) {
+		if (adjustmentCoefficient <= 0 || adjustmentCoefficient > 1) {
+			throw new IllegalArgumentException("adjustmentCoefficient is invalid, should be within (0; 1] range.");
+		}
+		for (int i = 0; i < iterationsLimit; i++) {
+			int misses = 0;
+			for (ReferenceVectorContainer container : referenceVectors) {
+				byte[] referenceVector = container.getReferenceVector();
+				KohonenNeuron winner = network.findWinnerNeuron(referenceVector);
+				int sign = 0;
+				if (network.getPositiveNeurons().contains(winner) == container.isInfected()) {
+					sign = 1;
+				}
+				else {
+					sign = -1;
+					misses++;
+				}
+				// NOTE: online correction, might want to consider offline instead
+				byte[] winnerWeights = winner.getWeights();
+				for (int j = 0; j < winnerWeights.length; j++) {
+					winnerWeights[j] += sign * adjustmentCoefficient * (referenceVector[j] - winnerWeights[j]);
+				}
+			}
+			// stop if desired precision reached
+			// non-obviously, misses actually holds error function value
+			if (misses < desiredError) {
+				break;
+			}
+		}
+	}
+	
+	private void initialize(NeuralNetwork network) {
+		Random random = new Random();
+		for (KohonenNeuron neuron : network.getPositiveNeurons()) {
+			byte[] weights = neuron.getWeights();
+			random.nextBytes(weights);
+		}
+		for (KohonenNeuron neuron : network.getNegativeNeurons()) {
+			byte[] weights = neuron.getWeights();
+			random.nextBytes(weights);
+		}
+	}
+}
