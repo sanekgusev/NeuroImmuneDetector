@@ -1,14 +1,14 @@
 package factories;
 
-import policies.KohonenNeuronsDistributionPolicy;
+import policies.DistributionPolicy;
 import structure.NeuralNetwork;
 import structure.NeuralNetworkImpl;
 
 public class NeuralNetworkFactory {
 	public static NeuralNetwork createNeuralNetwork(int numberOfInputs, 
-			int numberOfHiddenNeurons, KohonenNeuronsDistributionPolicy distributionPolicy) {
-		int numberOfPositiveNeurons = distributionPolicy.getNumberOfPositiveNeurons(numberOfHiddenNeurons);
-		int numberOfNegativeNeurons = distributionPolicy.getNumberOfNegativeNeurons(numberOfHiddenNeurons);
+			int numberOfHiddenNeurons, DistributionPolicy distributionPolicy) {
+		int numberOfPositiveNeurons = distributionPolicy.getNumberOfPositiveElements(numberOfHiddenNeurons);
+		int numberOfNegativeNeurons = numberOfHiddenNeurons - numberOfPositiveNeurons;
 		return new NeuralNetworkImpl(numberOfInputs, numberOfPositiveNeurons, numberOfNegativeNeurons);
 	}
 }

@@ -1,7 +1,13 @@
 package structure;
 
-// TODO: serializable
-public class KohonenNeuron {
+import java.io.Serializable;
+
+public class KohonenNeuron implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8165721364181741043L;
+	
 	private byte[] weights;
 
 	public byte[] getWeights() {

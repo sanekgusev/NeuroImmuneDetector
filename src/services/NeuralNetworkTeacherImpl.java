@@ -1,4 +1,4 @@
-package teaching;
+package services;
 
 import java.util.Random;
 
@@ -6,8 +6,12 @@ import structure.KohonenNeuron;
 import structure.NeuralNetwork;
 import vectors.ReferenceVectorContainer;
 
-public class NeuralNetworkTeacher {
+public class NeuralNetworkTeacherImpl implements NeuralNetworkTeacher {
 
+	/* (non-Javadoc)
+	 * @see services.NeuralNetworkTeacher#initializeAndTeach(structure.NeuralNetwork, java.lang.Iterable, double, int, double)
+	 */
+	@Override
 	public void initializeAndTeach(NeuralNetwork network, 
 			Iterable<ReferenceVectorContainer> referenceVectors,
 			double desiredError, 
@@ -17,6 +21,10 @@ public class NeuralNetworkTeacher {
 		teach(network, referenceVectors, desiredError, iterationsLimit, adjustmentCoefficient);
 	}
 	
+	/* (non-Javadoc)
+	 * @see services.NeuralNetworkTeacher#teach(structure.NeuralNetwork, java.lang.Iterable, double, int, double)
+	 */
+	@Override
 	public void teach(NeuralNetwork network, 
 			Iterable<ReferenceVectorContainer> referenceVectors,
 			double desiredError, 

@@ -1,20 +1,25 @@
 package structure;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-// TODO: serializable
-public class NeuralNetworkImpl implements NeuralNetwork {
+public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9105246747994707636L;
+	
 	private List<KohonenNeuron> positiveNeurons;
 	private List<KohonenNeuron> negativeNeurons;
 	
 	private int numberOfInputs;
 	
-	private int positiveAccumulator;
-	private int negativeAccumulator;
+	private transient int positiveAccumulator;
+	private transient int negativeAccumulator;
 	
 	public NeuralNetworkImpl(int numberOfInputs, int numberOfPositiveNeurons, int numberOfNegativeNeurons) {
 		if (numberOfInputs < 1) {
