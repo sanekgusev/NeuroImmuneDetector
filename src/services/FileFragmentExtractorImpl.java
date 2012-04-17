@@ -12,15 +12,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import exceptions.NeuroImmuneDetectorException;
+
 public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 	
 	private static interface InnerExtractor {
 		void getFragments(FileChannel channel, ByteBuffer buffer, 
-				Collection<byte[]> retCollection) throws IOException;
+				Collection<byte[]> retCollection) throws IOException, NeuroImmuneDetectorException;
 	}
 	
 	private Collection<byte[]> commonGetFragments(File file, int fragmentLength, 
-			InnerExtractor extractor) throws IOException {
+			InnerExtractor extractor) throws IOException, NeuroImmuneDetectorException {
 		if (fragmentLength <= 0) {
 			throw new IllegalArgumentException("Invalid fragmentLength, must be > 0");
 		}
@@ -65,16 +67,16 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 
 	@Override
 	public Collection<byte[]> getRandomFragments(final File file,
-			final int numberOfFragments, final int fragmentLength) throws IOException {
+			final int numberOfFragments, final int fragmentLength) throws IOException, NeuroImmuneDetectorException {
 		return commonGetFragments(file, fragmentLength, new InnerExtractor() {
 			
 			@Override
 			public void getFragments(FileChannel channel, ByteBuffer buffer,
-					Collection<byte[]> retCollection) throws IOException {
+					Collection<byte[]> retCollection) throws IOException, NeuroImmuneDetectorException {
 				long fileSize = getFileSize(file);
 				
 				if (fileSize < fragmentLength) {
-					// TODO: throw some kind of (own?) exception
+					throw new NeuroImmuneDetectorException("Size of file is less than requested fragment length");
 				}
 				
 				for (int i = 0; i < numberOfFragments; i++) {
@@ -90,30 +92,37 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 	}
 
 	@Override
-	public Iterable<byte[]> getSequentialOverlappingFragments(File file, final int fragmentLength) 
+	public Iterable<byte[]> getSequentialOverlappingFragments(File file, 
+			final int fragmentLength) 
 			throws IOException  {
 		
-		return commonGetFragments(file, fragmentLength, new InnerExtractor() {
-			
-			@Override
-			public void getFragments(FileChannel channel, ByteBuffer buffer,
-					Collection<byte[]> retCollection) throws IOException {
-				long length = 0;
-		        while((length = channel.read(buffer)) == fragmentLength) {
-		        	byte[] bytes = new byte[fragmentLength];
-		        	buffer.get(bytes);
-		        	retCollection.add(bytes);
-		        	channel.position(channel.position() - length + 1);
-		        	buffer.clear();
-		        }
-		        
-		        if (length < fragmentLength && length > 0) {
-		        	byte[] bytes = new byte[fragmentLength];
-		        	buffer.get(bytes, 0, (int)length);
-		        	retCollection.add(bytes);
-		        }
-			}
-			
-		});
+		try {
+			return commonGetFragments(file, fragmentLength, new InnerExtractor() {
+				
+				@Override
+				public void getFragments(FileChannel channel, ByteBuffer buffer,
+						Collection<byte[]> retCollection) throws IOException {
+					long length = 0;
+			        while((length = channel.read(buffer)) == fragmentLength) {
+			        	byte[] bytes = new byte[fragmentLength];
+			        	buffer.get(bytes);
+			        	retCollection.add(bytes);
+			        	channel.position(channel.position() - length + 1);
+			        	buffer.clear();
+			        }
+			        
+			        if (length < fragmentLength && length > 0) {
+			        	byte[] bytes = new byte[fragmentLength];
+			        	buffer.get(bytes, 0, (int)length);
+			        	retCollection.add(bytes);
+			        }
+				}
+				
+			});
+		} 
+		// Should neverª happen
+		catch (NeuroImmuneDetectorException e) {
+			return null;
+		}
 	}
 }
