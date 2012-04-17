@@ -1,5 +1,7 @@
 package services;
 
+import helpers.RandomHelper;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -60,10 +62,6 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
             stream.close();
         }
 	}
-	
-	private long getRandomValue(long limit) {
-		return (long)Math.round(Math.random() * limit);
-	}
 
 	@Override
 	public Collection<byte[]> getRandomFragments(final File file,
@@ -80,7 +78,7 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 				}
 				
 				for (int i = 0; i < numberOfFragments; i++) {
-					channel.position(getRandomValue(fileSize - fragmentLength));
+					channel.position(RandomHelper.getRandomValue(fileSize - fragmentLength));
 					assert (channel.read(buffer) == fragmentLength);
 					byte[] bytes = new byte[fragmentLength];
 					buffer.get(bytes);

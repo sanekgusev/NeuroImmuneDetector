@@ -4,7 +4,7 @@ import structure.KohonenNeuron;
 import structure.NeuralNetwork;
 import vectors.ReferenceVectorContainer;
 
-public class NeuralNetworkTesterImpl implements NeuralNetworkTester {
+public class NeuralNetworkVerifierImpl implements NeuralNetworkVerifier {
 
 	@Override
 	public double test(NeuralNetwork network,

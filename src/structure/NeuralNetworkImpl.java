@@ -35,12 +35,16 @@ public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
 		this.numberOfInputs = numberOfInputs;
 		positiveNeurons = new ArrayList<KohonenNeuron>();
 		for (int i = 0; i < numberOfPositiveNeurons; i++) {
-			positiveNeurons.add(new KohonenNeuron(this.numberOfInputs));
+			positiveNeurons.add(new KohonenNeuron(this.getNumberOfInputs()));
 		}
 		negativeNeurons = new ArrayList<KohonenNeuron>();
 		for (int i = 0; i < numberOfNegativeNeurons; i++) {
-			negativeNeurons.add(new KohonenNeuron(this.numberOfInputs));
+			negativeNeurons.add(new KohonenNeuron(this.getNumberOfInputs()));
 		}
+	}
+
+	public int getNumberOfInputs() {
+		return numberOfInputs;
 	}
 
 	/* (non-Javadoc)
@@ -89,7 +93,7 @@ public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
 	
 	@Override
 	public KohonenNeuron findWinnerNeuron(final byte[] inputVector) {
-		if (inputVector.length != numberOfInputs) {
+		if (inputVector.length != getNumberOfInputs()) {
 			throw new IllegalArgumentException("Wrong dimension of inputVector");
 		}
 		return Collections.min(getKohonenNeurons(), new Comparator<KohonenNeuron>() {

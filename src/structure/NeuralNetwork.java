@@ -3,6 +3,8 @@ package structure;
 import java.util.Collection;
 
 public interface NeuralNetwork {
+	
+	int getNumberOfInputs();
 
 	int getPositiveAccumulator();
 
