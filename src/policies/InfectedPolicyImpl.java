@@ -1,6 +1,6 @@
 package policies;
 
-import structure.NeuralNetwork;
+import domain_objects.NeuralNetwork;
 
 public class InfectedPolicyImpl implements InfectedPolicy {
 	

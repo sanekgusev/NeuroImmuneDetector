@@ -1,4 +1,4 @@
-package vectors;
+package domain_objects;
 
 public class ReferenceVectorContainer {
 	private byte[] referenceVector;

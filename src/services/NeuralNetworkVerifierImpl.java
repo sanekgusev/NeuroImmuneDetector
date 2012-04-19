@@ -1,8 +1,8 @@
 package services;
 
-import structure.KohonenNeuron;
-import structure.NeuralNetwork;
-import vectors.ReferenceVectorContainer;
+import domain_objects.KohonenNeuron;
+import domain_objects.NeuralNetwork;
+import domain_objects.ReferenceVectorContainer;
 
 public class NeuralNetworkVerifierImpl implements NeuralNetworkVerifier {
 

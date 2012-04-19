@@ -1,8 +1,8 @@
 package factories;
 
+import domain_objects.NeuralNetwork;
+import domain_objects.NeuralNetworkImpl;
 import policies.DistributionPolicy;
-import structure.NeuralNetwork;
-import structure.NeuralNetworkImpl;
 
 public class NeuralNetworkFactory {
 	public static NeuralNetwork createNeuralNetwork(int numberOfInputs, 

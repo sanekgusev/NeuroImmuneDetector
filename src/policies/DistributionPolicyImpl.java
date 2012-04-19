@@ -14,6 +14,9 @@ public class DistributionPolicyImpl implements
 
 	@Override
 	public int getNumberOfPositiveElements(int totalElements) {
+		if (totalElements < 0) {
+			throw new IllegalArgumentException("totalElements is invalid, should be >= 0");
+		}
 		return (int)Math.round(totalElements * positiveElementsPercentage);
 	}
 

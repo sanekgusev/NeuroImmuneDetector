@@ -3,11 +3,11 @@ package services;
 import java.io.File;
 import java.io.IOException;
 
+import domain_objects.NeuralNetwork;
+
 import policies.InfectedPolicy;
 
-import structure.NeuralNetwork;
 
-// TODO: implement
 public class FileCheckerImpl implements FileChecker {
 	
 	private final InfectedPolicy infectedPolicy;

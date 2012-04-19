@@ -7,11 +7,12 @@ import java.util.Collections;
 import java.io.File;
 import java.io.IOException;
 
+import domain_objects.ReferenceVectorContainer;
+
 import exceptions.NeuroImmuneDetectorException;
 
 import policies.DistributionPolicy;
 import repositories.FileRepository;
-import vectors.ReferenceVectorContainer;
 
 public class ReferenceVectorsCreatorImpl implements ReferenceVectorsCreator {
 

@@ -1,4 +1,4 @@
-package structure;
+package domain_objects;
 
 import java.util.Collection;
 
