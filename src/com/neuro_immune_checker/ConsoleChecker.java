@@ -60,6 +60,7 @@ public class ConsoleChecker {
 			}
 		} catch (IOException e) {
 			System.err.format("ERROR: %s.%n", e.getMessage());
+			e.printStackTrace();
 		}
 		
 		if (infectedCount == 0 && cleanCount == 0) {
