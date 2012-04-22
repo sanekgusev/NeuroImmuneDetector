@@ -47,17 +47,11 @@ public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
 		return numberOfInputs;
 	}
 
-	/* (non-Javadoc)
-	 * @see structure.NeuralNetwork#getPositiveAccumulator()
-	 */
 	@Override
 	public int getPositiveAccumulator() {
 		return positiveAccumulator;
 	}
 
-	/* (non-Javadoc)
-	 * @see structure.NeuralNetwork#getNegativeAccumulator()
-	 */
 	@Override
 	public int getNegativeAccumulator() {
 		return negativeAccumulator;
@@ -73,19 +67,12 @@ public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
 		return Collections.unmodifiableCollection(negativeNeurons);
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see structure.NeuralNetwork#getKohonenNeurons()
-	 */
 	private List<KohonenNeuron> getKohonenNeurons() {
 		List<KohonenNeuron> list = new ArrayList<KohonenNeuron>(positiveNeurons);
 		list.addAll(negativeNeurons);
 		return Collections.unmodifiableList(list);
 	}
 	
-	/* (non-Javadoc)
-	 * @see structure.NeuralNetwork#resetAccumulators()
-	 */
 	@Override
 	public void resetAccumulators() {
 		positiveAccumulator = negativeAccumulator = 0;
@@ -116,9 +103,6 @@ public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
 		});
 	}
 	
-	/* (non-Javadoc)
-	 * @see structure.NeuralNetwork#processVector(byte[])
-	 */
 	@Override
 	public void processVector(byte[] inputVector) {
 		
