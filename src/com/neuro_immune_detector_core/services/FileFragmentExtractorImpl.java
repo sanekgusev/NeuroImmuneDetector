@@ -80,8 +80,10 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 				
 				for (int i = 0; i < numberOfFragments; i++) {
 					channel.position(RandomHelper.getRandomValue(fileSize - fragmentLength));
-					assert (channel.read(buffer) == fragmentLength);
+					int read = channel.read(buffer);
+					assert (read == fragmentLength);
 					byte[] bytes = new byte[fragmentLength];
+					buffer.flip();
 					buffer.get(bytes);
 					retCollection.add(bytes);
 					buffer.clear();
