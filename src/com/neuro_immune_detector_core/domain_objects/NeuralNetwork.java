@@ -19,5 +19,7 @@ public interface NeuralNetwork {
 	KohonenNeuron findWinnerNeuron(byte[] inputVector);
 
 	void processVector(byte[] inputVector);
+	
+	void commitQueuedAdjustments();
 
 }

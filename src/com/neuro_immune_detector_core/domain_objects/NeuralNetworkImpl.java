@@ -116,4 +116,11 @@ public class NeuralNetworkImpl implements NeuralNetwork, Serializable {
 		}
 	}
 
+	@Override
+	public void commitQueuedAdjustments() {
+		for (KohonenNeuron neuron : getKohonenNeurons()) {
+			neuron.commitQueuedAdjustments();
+		}
+	}
+
 }
