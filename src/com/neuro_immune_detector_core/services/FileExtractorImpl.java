@@ -22,7 +22,7 @@ public class FileExtractorImpl implements FileExtractor {
 		Set<File> res = new HashSet<File>(numberOfFiles); 
 	    int repositorySize = repository.size();
 	    for(int i = repositorySize - numberOfFiles; i < repositorySize; i++) {
-	        int pos = RandomHelper.getRandomValue(i + 1);
+	        int pos = RandomHelper.getRandomValue(i);
 	        File file = repository.get(pos);
 	        if (res.contains(file)) {
 	            res.add(repository.get(i));
