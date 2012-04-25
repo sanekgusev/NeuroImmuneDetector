@@ -23,14 +23,14 @@ public class ConsoleTeacher {
 	private static final String TEST_CLEAN_PATH = "files/test/clean";
 	private static final String TEST_INFECTED_PATH = "files/test/infected";
 	
-	private static final int NUMBER_OF_NETWORKS = 25;
-	private static final int NUMBER_OF_INPUTS = 128;
-	private static final int NUMBER_OF_HIDDEN_NEURONS = 100;
-	private static final double POSITIVE_ELEMENTS_THRESHOLD = 0.2;
+	private static final int NUMBER_OF_NETWORKS = 10;
+	private static final int NUMBER_OF_INPUTS = 512;
+	private static final int NUMBER_OF_HIDDEN_NEURONS = 200;
+	private static final double POSITIVE_ELEMENTS_THRESHOLD = 0.5;
 	private static final double DESIRED_TEACH_ERROR = 0;
-	private static final int ITERATIONS_LIMIT = 1000;
-	private static final double ADJUSTMENT_COEFFICIENT = 0.1;
-	private static final double DESIRED_VERIFICATION_ERROR = 0;
+	private static final int ITERATIONS_LIMIT = 100;
+	private static final double ADJUSTMENT_COEFFICIENT = 0.01;
+	private static final double DESIRED_VERIFICATION_ERROR = 15;
 	private static final int NUMBER_OF_VERIFICATION_VECTORS = 50;
 	
 	private FileRepository learnCleanRepository;
@@ -77,8 +77,12 @@ public class ConsoleTeacher {
 	}
 	
 	private void savePopulation(String filename) 
-			throws IOException {
-		NeuralNetworkPopulationPersister.savePopulation(population, new File(filename));
+			throws IOException, NeuroImmuneDetectorException {
+		File file = new File(filename);
+		if (!file.createNewFile()) {
+			throw new NeuroImmuneDetectorException("The specified file already exists");
+		}
+		NeuralNetworkPopulationPersister.savePopulation(population, file);
 	}
 
 	/**
