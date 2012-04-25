@@ -106,6 +106,7 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 					long length = 0;
 			        while((length = channel.read(buffer)) == fragmentLength) {
 			        	byte[] bytes = new byte[fragmentLength];
+			        	buffer.flip();
 			        	buffer.get(bytes);
 			        	retCollection.add(bytes);
 			        	channel.position(channel.position() - length + 1);
@@ -114,6 +115,7 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 			        
 			        if (length < fragmentLength && length > 0) {
 			        	byte[] bytes = new byte[fragmentLength];
+			        	buffer.flip();
 			        	buffer.get(bytes, 0, (int)length);
 			        	retCollection.add(bytes);
 			        }
