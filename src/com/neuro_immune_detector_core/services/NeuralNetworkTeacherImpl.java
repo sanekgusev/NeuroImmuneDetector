@@ -38,9 +38,9 @@ public class NeuralNetworkTeacherImpl implements NeuralNetworkTeacher {
 		if (adjustmentCoefficient <= 0 || adjustmentCoefficient > 1) {
 			throw new IllegalArgumentException("adjustmentCoefficient is invalid, should be within (0; 1] range.");
 		}
-		logger.info(String.format("Starting teaching for network %s", network));
+		int misses = 0;
 		for (int i = 0; i < iterationsLimit; i++) {
-			int misses = 0;
+			misses = 0;
 			for (ReferenceVectorContainer container : referenceVectors) {
 				byte[] referenceVector = container.getReferenceVector();
 				KohonenNeuron winner = network.findWinnerNeuron(referenceVector);
@@ -58,29 +58,29 @@ public class NeuralNetworkTeacherImpl implements NeuralNetworkTeacher {
 				}
 			}
 			network.commitQueuedAdjustments();
-			logger.info(String.format("Misses on iteration %d: %d", i, misses));
+			
 			// stop if desired precision reached
 			// non-obviously, misses actually holds error function value
 			if (misses < desiredError) {
 				break;
 			}
 		}
-		logger.info(String.format("Finished teaching network %s", network));
+		logger.info(String.format("Misses on last iteration: %d", misses));
 	}
 	
+	// FIXME: hardcoded random offsets
 	private void initialize(NeuralNetwork network) {
 		Random random = new Random();
-		byte[] singleByte = new byte[1];
 		for (KohonenNeuron neuron : network.getPositiveNeurons()) {
 			for (int i = 0; i < neuron.getNumberOfWeights(); i++) {
-				random.nextBytes(singleByte);
-				neuron.setWeight(i, singleByte[0]);
+				int offset = random.nextInt(10);
+				neuron.setWeight(i, random.nextBoolean() ? (byte)offset : (byte)-offset);
 			}
 		}
 		for (KohonenNeuron neuron : network.getNegativeNeurons()) {
 			for (int i = 0; i < neuron.getNumberOfWeights(); i++) {
-				random.nextBytes(singleByte);
-				neuron.setWeight(i, singleByte[0]);
+				int offset = random.nextInt(10);
+				neuron.setWeight(i, random.nextBoolean() ? (byte)offset : (byte)-offset);
 			}
 		}
 	}
