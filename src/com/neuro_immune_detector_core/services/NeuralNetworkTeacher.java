@@ -7,6 +7,7 @@ public interface NeuralNetworkTeacher {
 
 	void initializeAndTeach(NeuralNetwork network,
 			Iterable<ReferenceVectorContainer> referenceVectors,
+			byte randomizationLimit,
 			double desiredError, int iterationsLimit,
 			double adjustmentCoefficient);
 

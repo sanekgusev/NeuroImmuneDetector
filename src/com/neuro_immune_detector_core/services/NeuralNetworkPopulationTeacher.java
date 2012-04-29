@@ -9,7 +9,8 @@ import com.neuro_immune_detector_core.repositories.FileRepository;
 
 public interface NeuralNetworkPopulationTeacher {
 	void initializeAndTeachAll(NeuralNetworkPopulation population, FileRepository infectedFiles, 
-			FileRepository cleanFiles, DistributionPolicy distributionPolicy, double desiredError, 
-			int iterationsLimit, double adjustmentCoefficient) 
+			FileRepository cleanFiles, DistributionPolicy distributionPolicy, 
+			double teachVectorsCoefficient, byte randomizationLimit, 
+			double desiredError, int iterationsLimit, double adjustmentCoefficient) 
 					throws IOException, NeuroImmuneDetectorException;
 }

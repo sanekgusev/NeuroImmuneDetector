@@ -1,7 +1,6 @@
 package com.neuro_immune_detector_core.services;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Iterator;
 
 import com.neuro_immune_detector_core.domain_objects.NeuralNetwork;
@@ -30,7 +29,7 @@ public class NeuralNetworkPopulationVerifierImpl implements
 		Iterator<NeuralNetwork> iterator = population.iterator();
 		while (iterator.hasNext()) {
 			NeuralNetwork network = iterator.next();
-			Collection<ReferenceVectorContainer> testVectors = 
+			Iterable<ReferenceVectorContainer> testVectors = 
 					vectorsCreator.createReferenceVectors(infectedFiles, cleanFiles, 
 							numberOfVectors, distributionPolicy, network.getNumberOfInputs());
 			if (networkVerifier.test(network, testVectors) > maximumAllowedError) {

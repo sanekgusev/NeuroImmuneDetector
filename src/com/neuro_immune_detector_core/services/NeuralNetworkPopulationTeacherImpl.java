@@ -1,7 +1,6 @@
 package com.neuro_immune_detector_core.services;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -25,20 +24,22 @@ public class NeuralNetworkPopulationTeacherImpl implements
 	
 	private ReferenceVectorsCreator vectorsCreator;
 	private NeuralNetworkTeacher teacher;
-	private NumberOfVectorsPolicy numberOfVectorsPolicy;
 	
 	public NeuralNetworkPopulationTeacherImpl() {
 		vectorsCreator = new ReferenceVectorsCreatorImpl();
 		teacher = new NeuralNetworkTeacherImpl();
-		numberOfVectorsPolicy = new NumberOfVectorsPolicyImpl();
 	}
 
 	@Override
 	public void initializeAndTeachAll(NeuralNetworkPopulation population,
 			final FileRepository infectedFiles, final FileRepository cleanFiles,
-			final DistributionPolicy distributionPolicy, final double desiredError,
-			final int iterationsLimit, final double adjustmentCoefficient) 
+			final DistributionPolicy distributionPolicy, 
+			double teachVectorsCoefficient, final byte randomizationLimit,
+			final double desiredError, final int iterationsLimit, 
+			final double adjustmentCoefficient) 
 					throws IOException, NeuroImmuneDetectorException {
+		
+		final NumberOfVectorsPolicy numberOfVectorsPolicy = new NumberOfVectorsPolicyImpl(teachVectorsCoefficient);
 		
 		ExecutorService executor = Executors.newCachedThreadPool();
     	List<Future<?>> futures = new LinkedList<Future<?>>();
@@ -46,7 +47,7 @@ public class NeuralNetworkPopulationTeacherImpl implements
 			futures.add(executor.submit(new Runnable() {
 				@Override
 				public void run() {
-					Collection<ReferenceVectorContainer> referenceVectors;
+					Iterable<ReferenceVectorContainer> referenceVectors;
 					try {
 						referenceVectors = vectorsCreator.createReferenceVectors(infectedFiles, 
 								cleanFiles, numberOfVectorsPolicy.getRequiredNumberOfVectors(network),
@@ -56,8 +57,8 @@ public class NeuralNetworkPopulationTeacherImpl implements
 					} catch (NeuroImmuneDetectorException e) {
 						throw new RuntimeException(e);
 					}
-					teacher.initializeAndTeach(network, referenceVectors, desiredError, 
-							iterationsLimit, adjustmentCoefficient);
+					teacher.initializeAndTeach(network, referenceVectors, randomizationLimit, 
+							desiredError, iterationsLimit, adjustmentCoefficient);
 				}
 			}));
 		}

@@ -23,15 +23,17 @@ public class ConsoleTeacher {
 	private static final String TEST_CLEAN_PATH = "files/test/clean";
 	private static final String TEST_INFECTED_PATH = "files/test/infected";
 	
-	private static final int NUMBER_OF_NETWORKS = 10;
+	private static final int NUMBER_OF_NETWORKS = 25;
 	private static final int NUMBER_OF_INPUTS = 512;
 	private static final int NUMBER_OF_HIDDEN_NEURONS = 200;
-	private static final double POSITIVE_ELEMENTS_THRESHOLD = 0.5;
+	private static final double POSITIVE_ELEMENTS_THRESHOLD = 0.4;
+	private static final double TEACH_VECTORS_COEFFICIENT = 2;
+	private static final byte RANDOMIZATION_LIMIT = 3;
 	private static final double DESIRED_TEACH_ERROR = 0;
 	private static final int ITERATIONS_LIMIT = 100;
 	private static final double ADJUSTMENT_COEFFICIENT = 0.01;
-	private static final double DESIRED_VERIFICATION_ERROR = 15;
-	private static final int NUMBER_OF_VERIFICATION_VECTORS = 50;
+	private static final double DESIRED_VERIFICATION_ERROR = 35;
+	private static final int NUMBER_OF_VERIFICATION_VECTORS = 100;
 	
 	private FileRepository learnCleanRepository;
 	private FileRepository learnInfectedRepository;
@@ -64,7 +66,8 @@ public class ConsoleTeacher {
 			throws IOException, NeuroImmuneDetectorException {
 		populationTeacher.initializeAndTeachAll(population,
 				learnInfectedRepository, learnCleanRepository, 
-				distributionPolicy, DESIRED_TEACH_ERROR, ITERATIONS_LIMIT,
+				distributionPolicy, TEACH_VECTORS_COEFFICIENT,
+				RANDOMIZATION_LIMIT, DESIRED_TEACH_ERROR, ITERATIONS_LIMIT,
 				ADJUSTMENT_COEFFICIENT);
 	}
 	
@@ -80,7 +83,7 @@ public class ConsoleTeacher {
 			throws IOException, NeuroImmuneDetectorException {
 		File file = new File(filename);
 		if (!file.createNewFile()) {
-			throw new NeuroImmuneDetectorException("The specified file already exists");
+			System.out.println("Specifier file already exists, overwriting.");
 		}
 		NeuralNetworkPopulationPersister.savePopulation(population, file);
 	}

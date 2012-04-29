@@ -24,7 +24,7 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 				Collection<byte[]> retCollection) throws IOException, NeuroImmuneDetectorException;
 	}
 	
-	private Collection<byte[]> commonGetFragments(File file, int fragmentLength, 
+	private Iterable<byte[]> commonGetFragments(File file, int fragmentLength, 
 			InnerExtractor extractor) throws IOException, NeuroImmuneDetectorException {
 		if (fragmentLength <= 0) {
 			throw new IllegalArgumentException("Invalid fragmentLength, must be > 0");
@@ -65,7 +65,7 @@ public class FileFragmentExtractorImpl implements FileFragmentExtractor {
 	}
 
 	@Override
-	public Collection<byte[]> getRandomFragments(final File file,
+	public Iterable<byte[]> getRandomFragments(final File file,
 			final int numberOfFragments, final int fragmentLength) throws IOException, NeuroImmuneDetectorException {
 		return commonGetFragments(file, fragmentLength, new InnerExtractor() {
 			

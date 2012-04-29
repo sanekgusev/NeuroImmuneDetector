@@ -18,7 +18,7 @@ import com.neuro_immune_detector_core.repositories.FileRepository;
 public class ReferenceVectorsCreatorImpl implements ReferenceVectorsCreator {
 
 	@Override
-	public Collection<ReferenceVectorContainer> createReferenceVectors(
+	public Iterable<ReferenceVectorContainer> createReferenceVectors(
 			FileRepository infectedFiles, FileRepository cleanFiles,
 			int numberOfVectors, DistributionPolicy distributionPolicy,
 			int vectorLength) throws IOException, NeuroImmuneDetectorException {

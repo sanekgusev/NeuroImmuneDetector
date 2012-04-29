@@ -19,10 +19,11 @@ public class NeuralNetworkTeacherImpl implements NeuralNetworkTeacher {
 	@Override
 	public void initializeAndTeach(NeuralNetwork network, 
 			Iterable<ReferenceVectorContainer> referenceVectors,
+			byte randomizationLimit,
 			double desiredError, 
 			int iterationsLimit,
 			double adjustmentCoefficient) {
-		initialize(network);
+		initialize(network, randomizationLimit);
 		teach(network, referenceVectors, desiredError, iterationsLimit, adjustmentCoefficient);
 	}
 	
@@ -68,18 +69,20 @@ public class NeuralNetworkTeacherImpl implements NeuralNetworkTeacher {
 		logger.info(String.format("Misses on last iteration: %d", misses));
 	}
 	
-	// FIXME: hardcoded random offsets
-	private void initialize(NeuralNetwork network) {
+	private void initialize(NeuralNetwork network, byte randomizationLimit) {
+		if (randomizationLimit <= 0) {
+			throw new IllegalArgumentException("Invalid randomizationLimit value, must be positive.");
+		}
 		Random random = new Random();
 		for (KohonenNeuron neuron : network.getPositiveNeurons()) {
 			for (int i = 0; i < neuron.getNumberOfWeights(); i++) {
-				int offset = random.nextInt(10);
+				int offset = random.nextInt(randomizationLimit);
 				neuron.setWeight(i, random.nextBoolean() ? (byte)offset : (byte)-offset);
 			}
 		}
 		for (KohonenNeuron neuron : network.getNegativeNeurons()) {
 			for (int i = 0; i < neuron.getNumberOfWeights(); i++) {
-				int offset = random.nextInt(10);
+				int offset = random.nextInt(randomizationLimit);
 				neuron.setWeight(i, random.nextBoolean() ? (byte)offset : (byte)-offset);
 			}
 		}
